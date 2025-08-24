@@ -10,3 +10,4 @@ const connectDB = async ()=>{
 
 }
 export default connectDB;
+// it is for the connection to the mongodb dataabse 

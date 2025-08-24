@@ -4,27 +4,28 @@ const userAuth = async (req, res, next) => {
     const { token } = req.cookies;
 
     if (!token) {
-        res.status(400).json({
+        return res.status(401).json({
             success: false,
-            message:"Not Authorized! Please log in again"
-        })
+            message: "Not Authorized! Please log in again"
+        });
     }
     try {
         const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
         if (tokenDecode.id) {
-            req.userId = tokenDecode.id
+            req.userId = tokenDecode.id;
+            return next();
         } else {
-            res.success(400).json({
+            return res.status(401).json({
                 success: false,
-                message:"Not Authorized! PLease log in again"
-            })
+                message: "Not Authorized! Please log in again"
+            });
         }
-        next();
     } catch (error) {
-        res.status(400).json({
+        return res.status(401).json({
             success: false,
             message: error.message
-        })
+        });
     }
-}
+};
+
 export default userAuth;
